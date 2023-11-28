@@ -3,7 +3,7 @@ import sys
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1000, 500
+WIDTH, HEIGHT = 1000, 600
 
 delta = {
     pg.K_UP: (0, -5),
@@ -17,7 +17,8 @@ delta = {
 def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内or画面外を判定し、真理値タプルを返す関数
-    引数rct
+    引数rct：こうかとんor爆弾SurfaceのRect
+    戻り値：横方向，縦方向はみ出し判定結果（画面内：True／画面外：False）
     """
     yoko, tate = True, True
     if rct.left < 0 or WIDTH < rct.right:
@@ -49,6 +50,11 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
+        if kk_rct.colliderect(bb_rct):
+            print("Game Over")
+            return
+        
+        
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         for k, tpl in delta.items():
